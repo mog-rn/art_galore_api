@@ -9,3 +9,62 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+
+  role Role @default(USER)
+
+  art Art[]
+
+  emailVerified Boolean @default(false)
+  tokens        Token[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum Role {
+  ARTIST
+  ADMIN
+  USER
+  COLLECTOR
+}
+
+model Art {
+  id        Int      @id @default(autoincrement())
+  art_name     String
+  image     String
+  price     Int
+  size      String
+  description String
+  category  String
+  quantity  Int
+  sold      Int @default(0)
+  
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("arts")
+}
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  @@map("tokens")
+}
