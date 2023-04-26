@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ArtService } from './art.service';
 import { CreateArtDto } from './dto/create-art.dto';
 import { UpdateArtDto } from './dto/update-art.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('art')
+@ApiTags('Art')	// Add this
 export class ArtController {
   constructor(private readonly artService: ArtService) {}
 
