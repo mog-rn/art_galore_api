@@ -19,6 +19,7 @@ specifiers:
   '@prisma/client': ^4.13.0
   '@types/express': ^4.17.13
   '@types/jest': 29.5.0
+  '@types/multer': ^1.4.7
   '@types/node': 18.15.11
   '@types/passport-jwt': ^3.0.8
   '@types/supertest': ^2.0.11
@@ -26,6 +27,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.0.0
   bcrypt: ^5.1.0
   class-validator: ^0.14.0
+  cloudinary: ^1.36.2
   eslint: ^8.0.1
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
@@ -40,6 +42,7 @@ specifiers:
   reflect-metadata: ^0.1.13
   rxjs: ^7.2.0
   source-map-support: ^0.5.20
+  streamifier: ^0.1.1
   supertest: ^6.1.3
   ts-jest: 29.0.5
   ts-loader: ^9.2.3
@@ -65,6 +68,7 @@ dependencies:
   '@types/passport-jwt': 3.0.8
   bcrypt: 5.1.0
   class-validator: 0.14.0
+  cloudinary: 1.36.2
   handlebars: 4.7.7
   nodemailer: 6.9.1
   passport: 0.6.0
@@ -72,6 +76,7 @@ dependencies:
   preview-email: 3.0.10
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
+  streamifier: 0.1.1
 
 devDependencies:
   '@nestjs/cli': 9.4.0
@@ -79,6 +84,7 @@ devDependencies:
   '@nestjs/testing': 9.4.0_adbpomi7iuzlxxwntv6inkfmju
   '@types/express': 4.17.17
   '@types/jest': 29.5.0
+  '@types/multer': 1.4.7
   '@types/node': 18.15.11
   '@types/supertest': 2.0.12
   '@typescript-eslint/eslint-plugin': 5.58.0_hzv37tkb63et4viajosjuuyxgi
@@ -1535,6 +1541,12 @@ packages:
   /@types/mime/3.0.1:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
 
+  /@types/multer/1.4.7:
+    resolution: {integrity: sha512-/SNsDidUFCvqqcWDwxv2feww/yqhNeTRL5CVoL3jU4Goc4kKEL10T7Eye65ZqPNi4HRx8sAEX59pV1aEH7drNA==}
+    dependencies:
+      '@types/express': 4.17.17
+    dev: true
+
   /@types/node/18.15.11:
     resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==}
 
@@ -2663,6 +2675,28 @@ packages:
     engines: {node: '>=0.8'}
     dev: true
 
+  /cloudinary-core/2.13.0_lodash@4.17.21:
+    resolution: {integrity: sha512-Nt0Q5I2FtenmJghtC4YZ3MZZbGg1wLm84SsxcuVwZ83OyJqG9CNIGp86CiI6iDv3QobaqBUpOT7vg+HqY5HxEA==}
+    peerDependencies:
+      lodash: '>=4.0'
+    dependencies:
+      lodash: 4.17.21
+    dev: false
+
+  /cloudinary/1.36.2:
+    resolution: {integrity: sha512-GTC6FkfYUvQ47Pox1ucTIXhbhvc04wPI8MPuRpoTX7IojyGVEjgHFBqgYn4FLX4nQEDsQIgvWYo/n8iBDyaX2g==}
+    engines: {node: '>=0.6'}
+    dependencies:
+      cloudinary-core: 2.13.0_lodash@4.17.21
+      core-js: 3.30.1
+      lodash: 4.17.21
+      q: 1.5.1
+    optionalDependencies:
+      proxy-agent: 5.0.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /co/4.6.0:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
@@ -2786,6 +2820,11 @@ packages:
 
   /cookiejar/2.1.4:
     resolution: {integrity: sha512-LDx6oHrK+PhzLKJU9j5S7/Y3jM/mUHvD/DeI1WQmJn652iPC5Y4TBzC9l+5OMOXlyTTA+SmVUPm0HQUwpD5Jqw==}
+
+  /core-js/3.30.1:
+    resolution: {integrity: sha512-ZNS5nbiSwDTq4hFosEDqm65izl2CWmLz0hARJMyNQBgkUZMIF51cQiMvIQKA6hvuaeWxQDP3hEedM1JZIgTldQ==}
+    requiresBuild: true
+    dev: false
 
   /core-util-is/1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -6310,6 +6349,11 @@ packages:
     resolution: {integrity: sha512-t+x1zEHDjBwkDGY5v5ApnZ/utcd4XYDiJsaQQoptTXgUXX95sDg1elCdJghzicm7n2mbCBJ3uYWr6M22SO19rg==}
     dev: true
 
+  /q/1.5.1:
+    resolution: {integrity: sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==}
+    engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
+    dev: false
+
   /qs/6.11.0:
     resolution: {integrity: sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==}
     engines: {node: '>=0.6'}
@@ -6787,6 +6831,11 @@ packages:
   /statuses/2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
     engines: {node: '>= 0.8'}
+
+  /streamifier/0.1.1:
+    resolution: {integrity: sha512-zDgl+muIlWzXNsXeyUfOk9dChMjlpkq0DRsxujtYPgyJ676yQ8jEm6zzaaWHFDg5BNcLuif0eD2MTyJdZqXpdg==}
+    engines: {node: '>=0.10'}
+    dev: false
 
   /streamsearch/1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
