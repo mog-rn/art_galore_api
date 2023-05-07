@@ -1,35 +1,63 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { ArtService } from './art.service';
 import { CreateArtDto } from './dto/create-art.dto';
 import { UpdateArtDto } from './dto/update-art.dto';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('art')
-@ApiTags('Art')	// Add this
+@ApiTags('Art') // Add this
 export class ArtController {
   constructor(private readonly artService: ArtService) {}
 
   @Post()
-  create(@Body() createArtDto: CreateArtDto) {
-    return this.artService.create(createArtDto);
+  @ApiCreatedResponse({ type: CreateArtDto })
+  async create(@Body() createArtDto: CreateArtDto) {
+    return await this.artService.create(createArtDto);
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: CreateArtDto, isArray: true })
   findAll() {
     return this.artService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: CreateArtDto })
   findOne(@Param('id') id: string) {
     return this.artService.findOne(+id);
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: CreateArtDto })
   update(@Param('id') id: string, @Body() updateArtDto: UpdateArtDto) {
     return this.artService.update(+id, updateArtDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: CreateArtDto })
   remove(@Param('id') id: string) {
     return this.artService.remove(+id);
   }
