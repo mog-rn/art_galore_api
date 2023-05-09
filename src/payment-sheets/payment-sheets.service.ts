@@ -1,11 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePaymentSheetDto } from './dto/create-payment-sheet.dto';
 import { UpdatePaymentSheetDto } from './dto/update-payment-sheet.dto';
+const stripe = require('stripe')('sk_test_51N41wCKvbhlMKkRFSyG7EBrt63ETGGAXkot5JXjaNfre7Y4Lx5UWnypluoCpqsBVPM0tbOVkLH25Q1hyHq0TKKjg00Sp3GG8IG')
 
 @Injectable()
 export class PaymentSheetsService {
-  create(createPaymentSheetDto: CreatePaymentSheetDto) {
-    return 'This action adds a new paymentSheet';
+  async create(createPaymentSheetDto: CreatePaymentSheetDto) {
+    const customer = await stripe.customers.create()
+    const ephemeralKey = await stripe.ephemeralKeys.create(
+      {customer: customer.id},
+      {apiVersion: '2022-11-15'}
+    )
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: 100,
+      currency: 'usd',
+      customer: customer.id,
+      payment_method_types: ['card'],
+      metadata: {integration_check: 'accept_a_payment'},
+    })
+
+    return {
+      customer: customer.id,
+      ephemeralKey: ephemeralKey.secret,
+      paymentIntent: paymentIntent.client_secret,
+      publishableKey: 'sk_test_51N41wCKvbhlMKkRFSyG7EBrt63ETGGAXkot5JXjaNfre7Y4Lx5UWnypluoCpqsBVPM0tbOVkLH25Q1hyHq0TKKjg00Sp3GG8IG',
+    }
   }
 
   findAll() {

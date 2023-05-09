@@ -1,13 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { PaymentSheetsService } from './payment-sheets.service';
 import { CreatePaymentSheetDto } from './dto/create-payment-sheet.dto';
 import { UpdatePaymentSheetDto } from './dto/update-payment-sheet.dto';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('payment-sheets')
+@ApiTags('Payment Sheets')
 export class PaymentSheetsController {
   constructor(private readonly paymentSheetsService: PaymentSheetsService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: CreatePaymentSheetDto })
   create(@Body() createPaymentSheetDto: CreatePaymentSheetDto) {
     return this.paymentSheetsService.create(createPaymentSheetDto);
   }
