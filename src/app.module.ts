@@ -10,9 +10,10 @@ import { AdminModule } from './admin/admin.module';
 import { PaymentsModule } from './payments/payments.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ImgUploadModule } from './img-upload/img-upload.module';
+import { PaymentSheetsModule } from './payment-sheets/payment-sheets.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, ArtModule, MailModule, PrismaModule, AdminModule, PaymentsModule, NotificationsModule, ImgUploadModule],
+  imports: [UsersModule, AuthModule, ArtModule, MailModule, PrismaModule, AdminModule, PaymentsModule, NotificationsModule, ImgUploadModule, PaymentSheetsModule],
   controllers: [AppController],
   providers: [AppService],
 })
