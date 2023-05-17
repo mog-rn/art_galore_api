@@ -12,7 +12,7 @@ export class PaymentSheetsService {
       {apiVersion: '2022-11-15'}
     )
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: 400000,
+      amount: 40000,
       currency: 'usd',
       customer: customer.id,
       payment_method_types: ['card'],
