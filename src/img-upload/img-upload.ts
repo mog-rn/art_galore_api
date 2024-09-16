@@ -11,3 +11,5 @@ export const ImgUploadProvider = {
     });
   },
 };
+
+export class ImgUpload {}

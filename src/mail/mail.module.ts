@@ -9,16 +9,16 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
+        host: 'smtp.sendgrid.net',
+        port: 465,
+        secure: true,
         auth: {
-          user: 'user@example.com',
-          pass: 'topsecret',
+          user: 'apikey',
+          pass: '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',
         },
       },
       defaults: {
-        from: '"No Reply" <noreply@example.com>',
+        from: '"No Reply" <amos.nyaburi@mog-rn.me>',
       },
       template: {
         dir: join(__dirname, 'templates'),
