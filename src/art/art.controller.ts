@@ -46,6 +46,14 @@ export class ArtController {
     return this.artService.findOne(+id);
   }
 
+  @Get('user/:userId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: CreateArtDto, isArray: true })
+  findByUser(@Param('userId') userId: string) {
+    return this.artService.findByUser(+userId);
+  }
+
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()

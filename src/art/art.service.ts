@@ -41,4 +41,12 @@ export class ArtService {
       },
     });
   }
+
+  findByUser(userId: number) {
+    return this.prisma.art.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
 }
