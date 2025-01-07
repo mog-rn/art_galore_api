@@ -14,7 +14,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         secure: true,
         auth: {
           user: 'apikey',
-          pass: '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',
+          pass: process.env.SENDGRID_API_KEY,
         },
       },
       defaults: {
