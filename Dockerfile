@@ -16,9 +16,9 @@ COPY . /app
 COPY prisma/schema.prisma /app/prisma/schema.prisma
 
 # Generate Prisma Client
-RUN pnpm run generate
+RUN npm run generate
 
-RUN pnpm run build
+RUN npm run build
 
 EXPOSE 8080
 CMD ["npm", "start:prod"]
