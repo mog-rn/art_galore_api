@@ -118,3 +118,4 @@ jobs:
             --region ${{ secrets.GCP_REGION }} \
             --env-vars-file=env-vars.yaml \
             --allow-unauthenticated
+            
