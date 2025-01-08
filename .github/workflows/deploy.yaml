@@ -89,12 +89,20 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SERVICE_KEY }}
 
+      - name: Create Environment Variables File
+        run: |
+            echo "DATABASE_URL: \"${{ secrets.DATABASE_URL }}\"" > env-vars.yaml
+            echo "SENDGRID_API_KEY: \"${{ secrets.SENDGRID_API_KEY }}\"" >> env-vars.yaml
+            echo "BASE_URL: \"${{ secrets.BASE_URL }}\"" >> env-vars.yaml
+            echo "CLOUDINARY_NAME: \"${{ secrets.CLOUDINARY_NAME }}\"" >> env-vars.yaml
+            echo "CLOUDINARY_API_KEY: \"${{ secrets.CLOUDINARY_API_KEY }}\"" >> env-vars.yaml
+            echo "CLOUDINARY_API_SECRET: \"${{ secrets.CLOUDINARY_API_SECRET }}\"" >> env-vars.yaml
+  
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy ${{ secrets.SERVICE_NAME }} \
-            --image ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GAR_REPOSITORY_NAME }}/${{ secrets.SERVICE_NAME }}:$GITHUB_SHA \
-            --platform managed \
-            --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated
-
-            
+            gcloud run deploy ${{ secrets.SERVICE_NAME }} \
+                --image ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GAR_REPOSITORY_NAME }}/${{ secrets.SERVICE_NAME }}:$GITHUB_SHA \
+                --platform managed \
+                --region ${{ secrets.GCP_REGION }} \
+                --env-vars-file=env-vars.yaml \
+                --allow-unauthenticated
