@@ -28,13 +28,24 @@ export class MailService {
   }
 
   async sendPaymentReceipt(user: UserEntity, paymentDetails: any) {
-    console.log('Sending payment receipt:', { user, paymentDetails });
-
     if (!user || !user.email) {
       throw new Error('User or email is missing');
     }
 
     const { amount, currency, artDetails } = paymentDetails;
+
+    if (!artDetails || !Array.isArray(artDetails)) {
+      throw new Error('Invalid artDetails format');
+    }
+
+    // Validate each art detail
+    artDetails.forEach((art, index) => {
+      if (!art.art_name || art.price == null) {
+        throw new Error(
+          `Art detail at index ${index} is missing required fields`,
+        );
+      }
+    });
 
     await this.mailerService.sendMail({
       to: user.email,
