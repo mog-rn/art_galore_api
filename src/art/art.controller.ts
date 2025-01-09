@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  BadRequestException,
 } from '@nestjs/common';
 import { ArtService } from './art.service';
 import { CreateArtDto } from './dto/create-art.dto';
@@ -68,5 +69,13 @@ export class ArtController {
   @ApiOkResponse({ type: CreateArtDto })
   remove(@Param('id') id: string) {
     return this.artService.remove(+id);
+  }
+
+  @Post('details')
+  async getArtDetails(@Body('artIds') artIds: number[]) {
+    if (!artIds || artIds.length === 0) {
+      throw new BadRequestException('artIds is required');
+    }
+    return await this.artService.getArtDetailsByIds(artIds);
   }
 }

@@ -49,4 +49,25 @@ export class ArtService {
       },
     });
   }
+
+  async getArtDetailsByIds(artIds: number[]) {
+    return await this.prisma.art.findMany({
+      where: {
+        id: {
+          in: artIds,
+        },
+      },
+      select: {
+        id: true,
+        art_name: true,
+        price: true,
+        User: {
+          select: {
+            name: true,
+          },
+        },
+        image: true,
+      },
+    });
+  }
 }
