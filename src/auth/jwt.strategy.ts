@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
@@ -14,13 +13,13 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: { userId: number }) {
     const user = await this.usersService.findOne(payload.userId);
 
     if (!user) {
       throw new UnauthorizedException();
     }
 
-    return user;
+    return { id: user.id, email: user.email, role: user.role };
   }
 }

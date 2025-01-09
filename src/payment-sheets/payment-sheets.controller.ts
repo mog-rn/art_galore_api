@@ -1,55 +1,40 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   UseGuards,
-  HttpCode,
-  HttpStatus,
+  Req,
+  Patch,
+  Delete,
 } from '@nestjs/common';
 import { PaymentSheetsService } from './payment-sheets.service';
 import { CreatePaymentSheetDto } from './dto/create-payment-sheet.dto';
 import { UpdatePaymentSheetDto } from './dto/update-payment-sheet.dto';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Request } from 'express';
 
 @Controller('payment-sheets')
-@ApiTags('Payment Sheets')
 export class PaymentSheetsController {
   constructor(private readonly paymentSheetsService: PaymentSheetsService) {}
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @HttpCode(HttpStatus.CREATED)
-  @ApiOkResponse({ type: CreatePaymentSheetDto })
-  async create(@Body() createPaymentSheetDto: CreatePaymentSheetDto) {
-    return this.paymentSheetsService.create(createPaymentSheetDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.paymentSheetsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paymentSheetsService.findOne(+id);
+  async create(
+    @Body() createPaymentSheetDto: CreatePaymentSheetDto,
+    @Req() req: Request,
+  ) {
+    const userId = req.user.id;
+    return this.paymentSheetsService.create(createPaymentSheetDto, userId);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updatePaymentSheetDto: UpdatePaymentSheetDto,
-  ) {
-    return this.paymentSheetsService.update(+id, updatePaymentSheetDto);
+  async update(@Param('id') id: string, @Body() dto: UpdatePaymentSheetDto) {
+    return this.paymentSheetsService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paymentSheetsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return this.paymentSheetsService.remove(id);
   }
 }
