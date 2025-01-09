@@ -1,0 +1,22 @@
+<p>Hi {{name}},</p>
+
+<p>Thank you for your purchase on Masterpiece Market!</p>
+
+<p>Here are the details of your transaction:</p>
+
+<ul>
+  <li><strong>Amount:</strong> {{amount}} {{currency}}</li>
+  <li><strong>Purchased Items:</strong></li>
+  <ul>
+    {{#each artDetails}}
+      <li>{{this.name}} - {{this.price}} {{../currency}}</li>
+    {{/each}}
+  </ul>
+</ul>
+
+<p>If you have any questions, feel free to contact us at support@masterpiecemkt.com.</p>
+
+<p>Thank you for supporting our artists!</p>
+
+<p>Best regards,</p>
+<p>The Masterpiece Market Team</p>

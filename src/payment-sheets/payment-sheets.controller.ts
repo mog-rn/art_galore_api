@@ -37,4 +37,14 @@ export class PaymentSheetsController {
   async remove(@Param('id') id: string) {
     return this.paymentSheetsService.remove(id);
   }
+
+  @Post('send-receipt')
+  @UseGuards(JwtAuthGuard)
+  async sendReceipt(@Req() req: any, @Body() paymentDetails: any) {
+    const userId = req.user.id;
+    return this.paymentSheetsService.handlePaymentSuccess(
+      userId,
+      paymentDetails,
+    );
+  }
 }

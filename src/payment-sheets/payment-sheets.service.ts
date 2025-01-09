@@ -8,11 +8,15 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePaymentSheetDto } from './dto/create-payment-sheet.dto';
 import { UpdatePaymentSheetDto } from './dto/update-payment-sheet.dto';
+import { MailService } from 'src/mail/mail.service';
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 @Injectable()
 export class PaymentSheetsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private mailService: MailService,
+  ) {}
 
   async create(createPaymentSheetDto: CreatePaymentSheetDto, userId: number) {
     const MINIMUM_AMOUNT_USD_CENTS = 50;
@@ -38,7 +42,7 @@ export class PaymentSheetsService {
       );
 
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: createPaymentSheetDto.amount, 
+        amount: createPaymentSheetDto.amount,
         currency: 'kes',
         customer: customer.id,
         payment_method_types: ['card'],
@@ -151,5 +155,25 @@ export class PaymentSheetsService {
     if (!payment)
       throw new NotFoundException(`Payment with ID ${id} not found.`);
     return this.prisma.payment.delete({ where: { transaction_id: id } });
+  }
+
+  async handlePaymentSuccess(userId: number, paymentDetails: any) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new Error('User not found');
+
+    const artDetails = await this.prisma.art.findMany({
+      where: { id: { in: paymentDetails.artIds } },
+      select: { art_name: true, price: true },
+    });
+
+    const receiptDetails = {
+      amount: paymentDetails.amount,
+      currency: paymentDetails.currency,
+      artDetails,
+    };
+
+    await this.mailService.sendPaymentReceipt(user, receiptDetails);
+
+    return { message: 'Payment and receipt email sent successfully' };
   }
 }
