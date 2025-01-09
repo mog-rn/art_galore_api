@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { PaymentSheetsService } from './payment-sheets.service';
 import { CreatePaymentSheetDto } from './dto/create-payment-sheet.dto';
 import { UpdatePaymentSheetDto } from './dto/update-payment-sheet.dto';
@@ -13,8 +24,9 @@ export class PaymentSheetsController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @HttpCode(HttpStatus.CREATED)
   @ApiOkResponse({ type: CreatePaymentSheetDto })
-  create(@Body() createPaymentSheetDto: CreatePaymentSheetDto) {
+  async create(@Body() createPaymentSheetDto: CreatePaymentSheetDto) {
     return this.paymentSheetsService.create(createPaymentSheetDto);
   }
 
@@ -29,7 +41,10 @@ export class PaymentSheetsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaymentSheetDto: UpdatePaymentSheetDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updatePaymentSheetDto: UpdatePaymentSheetDto,
+  ) {
     return this.paymentSheetsService.update(+id, updatePaymentSheetDto);
   }
 
