@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   ParseIntPipe,
+  Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,6 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Request } from 'express';
 
 @Controller('users')
 @ApiTags('Users')
@@ -66,5 +69,12 @@ export class UsersController {
   @ApiOkResponse({ type: UserEntity })
   async remove(@Param('id', ParseIntPipe) id: number) {
     return new UserEntity(await this.usersService.remove(id));
+  }
+
+  @Get('order-history')
+  @UseGuards(JwtAuthGuard)
+  async getOrderHistory(@Req() req: Request) {
+    const userId = req.user.id;
+    return this.usersService.getOrderHistory(userId);
   }
 }

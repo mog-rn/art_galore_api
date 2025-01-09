@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from './entities/user.entity';
+import { GetOrderHistoryDto } from './dto/order-history.dto';
 
 @Injectable()
 export class UsersService {
@@ -46,6 +47,15 @@ export class UsersService {
     return this.prisma.user.delete({
       where: {
         id,
+      },
+    });
+  }
+
+  async getOrderHistory(userId: number) {
+    return this.prisma.payment.findMany({
+      where: { userId },
+      include: {
+        Art: true,
       },
     });
   }
