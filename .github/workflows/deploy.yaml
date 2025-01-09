@@ -97,6 +97,7 @@ jobs:
             echo "CLOUDINARY_NAME: \"${{ secrets.CLOUDINARY_NAME }}\"" >> env-vars.yaml
             echo "CLOUDINARY_API_KEY: \"${{ secrets.CLOUDINARY_API_KEY }}\"" >> env-vars.yaml
             echo "CLOUDINARY_API_SECRET: \"${{ secrets.CLOUDINARY_API_SECRET }}\"" >> env-vars.yaml
+            echo "STRIPE_SECRET_KEY: \"${{ secrets.STRIPE_SECRET_KEY }}\"" >> env-vars.yaml
   
       - name: Deploy to Cloud Run
         run: |
